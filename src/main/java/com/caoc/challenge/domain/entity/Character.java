@@ -15,7 +15,7 @@ public class Character {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String photo;
+    private String image;
     private String name;
     private Integer age;
     private String history;
