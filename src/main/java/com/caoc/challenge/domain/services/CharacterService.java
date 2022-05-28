@@ -8,5 +8,5 @@ public interface CharacterService {
     List<CharacterDTO> getAll();
     CharacterDTO create(CharacterDTO characterDTO);
     CharacterDTO update(CharacterDTO characterDTO);
-    void delete(CharacterDTO characterDTO);
+    void delete(Long id);
 }

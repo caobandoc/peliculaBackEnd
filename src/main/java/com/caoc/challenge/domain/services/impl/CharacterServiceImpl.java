@@ -4,6 +4,8 @@ import com.caoc.challenge.domain.repository.CharacterRepository;
 import com.caoc.challenge.domain.services.CharacterService;
 import com.caoc.challenge.domain.entity.Character;
 import com.caoc.challenge.web.dto.CharacterDTO;
+import com.caoc.challenge.web.mapper.CharacterMapper;
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,29 +16,20 @@ import java.util.List;
 public class CharacterServiceImpl implements CharacterService {
     @Autowired
     private CharacterRepository characterRepository;
+    @Autowired
+    private CharacterMapper characterMapper;
 
     @Override
     public List<CharacterDTO> getAll() {
         List<Character> charactersEntity = (List<Character>) characterRepository.findAll();
-        return transformCharactersList(charactersEntity);
+        return characterMapper.toCharactersDTO(charactersEntity);
     }
 
     @Override
     public CharacterDTO create(CharacterDTO characterDTO) {
-        Character character = characterRepository.save(Character.builder()
-                .name(characterDTO.getNombre())
-                .age(characterDTO.getEdad())
-                .history(characterDTO.getHistoria())
-                .image(characterDTO.getImagen())
-                .build());
+        Character character = characterRepository.save(characterMapper.toCharacter(characterDTO));
 
-        return CharacterDTO.builder()
-                .id(character.getId())
-                .nombre(character.getName())
-                .edad(character.getAge())
-                .historia(character.getHistory())
-                .imagen(character.getImage())
-                .build();
+        return characterMapper.toCharacterDTO(character);
     }
 
     @Override
@@ -47,33 +40,12 @@ public class CharacterServiceImpl implements CharacterService {
         characterSearch.setHistory(characterDTO.getHistoria());
         characterSearch.setImage(characterDTO.getImagen());
         Character character = characterRepository.save(characterSearch);
-        return CharacterDTO.builder()
-                .id(character.getId())
-                .nombre(character.getName())
-                .edad(character.getAge())
-                .historia(character.getHistory())
-                .imagen(character.getImage())
-                .build();
+        return characterMapper.toCharacterDTO(character);
     }
 
     @Override
-    public void delete(CharacterDTO characterDTO) {
-        characterRepository.deleteById(characterDTO.getId());
-    }
-
-    private List<CharacterDTO> transformCharactersList(List<Character> charactersEntity) {
-        List<CharacterDTO> charactersDTO = new ArrayList<>();
-        for (Character character : charactersEntity) {
-            CharacterDTO characterDTO = CharacterDTO.builder()
-                    .id(character.getId())
-                    .imagen(character.getImage())
-                    .nombre(character.getName())
-                    .edad(character.getAge())
-                    .historia(character.getHistory())
-                    .build();
-            charactersDTO.add(characterDTO);
-        }
-        return charactersDTO;
+    public void delete(Long id) {
+        characterRepository.deleteById(id);
     }
 
 }

@@ -48,8 +48,8 @@ public class CharacterController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<CharacterDTO> delete(@RequestBody CharacterDTO characterDTO) {
-        characterService.delete(characterDTO);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    public ResponseEntity delete(@PathVariable("id") Long id) {
+        characterService.delete(id);
+        return new ResponseEntity(HttpStatus.OK);
     }
 }
