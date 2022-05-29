@@ -35,13 +35,15 @@ public class CharacterController {
 
     @PutMapping("/update")
     public ResponseEntity<CharacterDTO> update(@RequestBody CharacterDTO characterDTO) {
-        return new ResponseEntity<>(characterService.update(characterDTO), HttpStatus.OK);
+        return characterService.update(characterDTO)
+                .map(characterDTO1 -> new ResponseEntity<>(characterDTO1, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable("id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         characterService.delete(id);
-        return new ResponseEntity(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     /*

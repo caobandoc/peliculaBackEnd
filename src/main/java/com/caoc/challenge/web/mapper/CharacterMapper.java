@@ -6,7 +6,7 @@ import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {MovieMapper.class})
 public interface CharacterMapper {
     //Entity - DTO
     @Mappings({
@@ -14,7 +14,9 @@ public interface CharacterMapper {
             @Mapping(source="image", target="imagen"),
             @Mapping(source="name", target="nombre"),
             @Mapping(source="age", target="edad"),
-            @Mapping(source="history", target="historia")
+            @Mapping(source="weight", target="peso"),
+            @Mapping(source="history", target="historia"),
+            @Mapping(source="movies", target="peliculas")
     })
     CharacterDTO toCharacterDTO(Character character);
     List<CharacterDTO> toCharactersDTO(List<Character> characters);

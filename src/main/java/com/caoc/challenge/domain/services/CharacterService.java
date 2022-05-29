@@ -9,6 +9,6 @@ public interface CharacterService {
     List<CharacterDTO> getAll();
     Optional<CharacterDTO> getById(Long id);
     CharacterDTO create(CharacterDTO characterDTO);
-    CharacterDTO update(CharacterDTO characterDTO);
+    Optional<CharacterDTO> update(CharacterDTO characterDTO);
     void delete(Long id);
 }

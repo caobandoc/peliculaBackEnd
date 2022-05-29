@@ -2,6 +2,8 @@ package com.caoc.challenge.web.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @Builder
@@ -12,7 +14,8 @@ public class CharacterDTO {
     private String imagen;
     private String nombre;
     private Integer edad;
+    private Double peso;
     private String historia;
-    //private List<MovieDTO> peliculas;
+    private List<MovieDTO> peliculas;
 
 }
