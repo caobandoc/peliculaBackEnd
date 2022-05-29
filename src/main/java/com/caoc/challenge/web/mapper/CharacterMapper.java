@@ -2,6 +2,7 @@ package com.caoc.challenge.web.mapper;
 
 import com.caoc.challenge.web.dto.CharacterDTO;
 import com.caoc.challenge.domain.entity.Character;
+import com.caoc.challenge.web.dto.CharacterParamDTO;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -24,4 +25,12 @@ public interface CharacterMapper {
     @InheritInverseConfiguration
     Character toCharacter(CharacterDTO characterDTO);
     List<Character> toCharacters(List<CharacterDTO> characterDTOs);
+
+    @Mappings({
+            @Mapping(source="image", target="imagen"),
+            @Mapping(source="name", target="nombre")
+    })
+    CharacterParamDTO toCharacterParamDTO(Character character);
+    List<CharacterParamDTO> toCharactersParamDTO(List<Character> characters);
+
 }

@@ -2,6 +2,7 @@ package com.caoc.challenge.web.controller;
 
 import com.caoc.challenge.domain.services.CharacterService;
 import com.caoc.challenge.web.dto.CharacterDTO;
+import com.caoc.challenge.web.dto.CharacterParamDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,16 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/character")
+@RequestMapping("/characters")
 public class CharacterController {
 
     @Autowired
     private CharacterService characterService;
-
-    @GetMapping("")
-    public ResponseEntity<List<CharacterDTO>> getAll() {
-        return new ResponseEntity<>(characterService.getAll(), HttpStatus.OK);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<CharacterDTO> getById(@PathVariable Long id) {
@@ -45,20 +41,12 @@ public class CharacterController {
         characterService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @GetMapping("")
+    public ResponseEntity<List<CharacterParamDTO>> getParameters(@RequestParam(required = false) String name,
+                                                                 @RequestParam(required = false) Integer age,
+                                                                 @RequestParam(required = false) Double weight,
+                                                                 @RequestParam(required = false) Long idMovie) {
+        return new ResponseEntity<>(characterService.getByParameters(name, age, weight, idMovie), HttpStatus.OK);
 
-    /*
-    @GetMapping("/{name}")
-    public ResponseEntity<List<CharacterDTO>> getName(@PathVariable("name") String name){
-        return new ResponseEntity<>(characterService.getName(name), HttpStatus.OK);
     }
-
-    @GetMapping("/{age}")
-    public ResponseEntity<List<CharacterDTO>> getAge(@PathVariable("age") String age){
-        return new ResponseEntity<>(characterService.getAge(age), HttpStatus.OK);
-    }
-
-    @GetMapping("/{movies}")
-    public ResponseEntity<List<CharacterDTO>> getMovies(@PathVariable("movies") String movies){
-        return new ResponseEntity<>(characterService.getMovies(movies), HttpStatus.OK);
-    }*/
 }

@@ -7,6 +7,7 @@ import com.caoc.challenge.domain.services.CharacterService;
 import com.caoc.challenge.domain.entity.Character;
 import com.caoc.challenge.domain.services.MovieService;
 import com.caoc.challenge.web.dto.CharacterDTO;
+import com.caoc.challenge.web.dto.CharacterParamDTO;
 import com.caoc.challenge.web.mapper.CharacterMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,6 @@ public class CharacterServiceImpl implements CharacterService {
     private CharacterRepository characterRepository;
     @Autowired
     private CharacterMapper characterMapper;
-
-    @Override
-    public List<CharacterDTO> getAll() {
-        return characterMapper.toCharactersDTO((List<Character>) characterRepository.findAll());
-    }
 
     @Override
     public Optional<CharacterDTO> getById(Long id) {
@@ -47,9 +43,6 @@ public class CharacterServiceImpl implements CharacterService {
             return Optional.of(characterMapper.toCharacterDTO(characterRepository.save(character)));
         }
         return Optional.empty();
-        /*setCharacterUpdate(characterDTO, characterSearch);
-        Character character = characterRepository.save(characterSearch);
-        return characterMapper.toCharacterDTO(character);*/
     }
 
     private void setCharacterUpdate(CharacterDTO characterDTO, Character characterSearch) {
@@ -63,6 +56,17 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public void delete(Long id) {
         characterRepository.deleteById(id);
+    }
+
+    @Override
+    public List<CharacterParamDTO> getByParameters(String name, Integer age, Double weight, Long idMovie) {
+        if (idMovie != null){
+            return characterMapper.toCharactersParamDTO(characterRepository.findByMoviesId(idMovie));
+        }else if (name != null || age != null || weight != null){
+            return characterMapper.toCharactersParamDTO(characterRepository.findByNameOrAgeOrWeight(name, age, weight));
+        }else{
+            return characterMapper.toCharactersParamDTO(characterRepository.findAll());
+        }
     }
 
 }
