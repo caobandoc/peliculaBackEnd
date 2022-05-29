@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/characters")
+@RequestMapping("/character")
 public class CharacterController {
 
     @Autowired
@@ -23,7 +23,9 @@ public class CharacterController {
 
     @GetMapping("/{id}")
     public ResponseEntity<CharacterDTO> getById(@PathVariable Long id) {
-        return new ResponseEntity<>(characterService.getById(id), HttpStatus.OK);
+        return characterService.getById(id)
+                .map(characterDTO -> new ResponseEntity<>(characterDTO, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/add")

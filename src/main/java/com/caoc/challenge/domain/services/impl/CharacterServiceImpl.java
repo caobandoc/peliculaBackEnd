@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CharacterServiceImpl implements CharacterService {
@@ -25,9 +26,9 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     @Override
-    public CharacterDTO getById(Long id) {
-        Character characterEntity = characterRepository.findById(id).orElse(null);
-        return characterMapper.toCharacterDTO(characterEntity);
+    public Optional<CharacterDTO> getById(Long id) {
+        Optional<Character> characterEntity = characterRepository.findById(id);
+        return characterEntity.map(characterMapper::toCharacterDTO);
     }
 
     @Override

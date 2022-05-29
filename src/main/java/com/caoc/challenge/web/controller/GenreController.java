@@ -22,7 +22,9 @@ public class GenreController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GenreDTO> getById(@PathVariable Long id) {
-        return new ResponseEntity<>(genreService.getById(id), HttpStatus.OK);
+        return genreService.getById(id)
+                .map(genreDTO -> new ResponseEntity<>(genreDTO, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/add")

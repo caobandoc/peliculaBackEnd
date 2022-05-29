@@ -6,9 +6,12 @@ import com.caoc.challenge.domain.services.GenreService;
 import com.caoc.challenge.web.dto.GenreDTO;
 import com.caoc.challenge.web.mapper.GenreMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class GenreServiceImpl implements GenreService {
 
     @Autowired
@@ -24,9 +27,10 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public GenreDTO getById(Long id) {
-        Genre genreEntity = genreRepository.findById(id).orElse(null);
-        return genreMapper.toGenreDTO(genreEntity);
+    public Optional<GenreDTO> getById(Long id) {
+        Optional<Genre> genreEntity = genreRepository.findById(id);
+        return genreEntity.map(genreMapper::toGenreDTO);
+        //return genreEntity.map(prod -> genreMapper.toGenreDTO(prod));
     }
 
     @Override
