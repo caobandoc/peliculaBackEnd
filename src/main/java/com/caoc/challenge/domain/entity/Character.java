@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Table(name = "characters")
 public class Character {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String image;
     private String name;

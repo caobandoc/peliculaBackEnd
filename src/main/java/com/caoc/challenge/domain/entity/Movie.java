@@ -14,9 +14,10 @@ import java.util.Date;
 @Table(name = "movies")
 public class Movie {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
+    @Column(name = "creation_date")
     private Date creationDate;
     private Integer rate;
     //private List<Character> characters;
