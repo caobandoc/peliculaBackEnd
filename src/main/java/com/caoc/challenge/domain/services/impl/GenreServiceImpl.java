@@ -28,9 +28,8 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public Optional<GenreDTO> getById(Long id) {
-        Optional<Genre> genreEntity = genreRepository.findById(id);
-        return genreEntity.map(genreMapper::toGenreDTO);
-        //return genreEntity.map(prod -> genreMapper.toGenreDTO(prod));
+        return genreRepository.findById(id).map(genreMapper::toGenreDTO);
+        //return genreRepository.findById(id).map(prod -> genreMapper.toGenreDTO(prod));
     }
 
     @Override

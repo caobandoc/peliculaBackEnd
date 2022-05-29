@@ -1,8 +1,6 @@
 package com.caoc.challenge.web.mapper;
 
-import com.caoc.challenge.domain.entity.Character;
 import com.caoc.challenge.domain.entity.Genre;
-import com.caoc.challenge.web.dto.CharacterDTO;
 import com.caoc.challenge.web.dto.GenreDTO;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
