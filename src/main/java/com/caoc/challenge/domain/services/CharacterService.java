@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface CharacterService {
     List<CharacterDTO> getAll();
+    CharacterDTO getById(Long id);
     CharacterDTO create(CharacterDTO characterDTO);
     CharacterDTO update(CharacterDTO characterDTO);
     void delete(Long id);

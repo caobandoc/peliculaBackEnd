@@ -21,14 +21,18 @@ public class CharacterServiceImpl implements CharacterService {
 
     @Override
     public List<CharacterDTO> getAll() {
-        List<Character> charactersEntity = (List<Character>) characterRepository.findAll();
-        return characterMapper.toCharactersDTO(charactersEntity);
+        return characterMapper.toCharactersDTO((List<Character>) characterRepository.findAll());
+    }
+
+    @Override
+    public CharacterDTO getById(Long id) {
+        Character characterEntity = characterRepository.findById(id).orElse(null);
+        return characterMapper.toCharacterDTO(characterEntity);
     }
 
     @Override
     public CharacterDTO create(CharacterDTO characterDTO) {
         Character character = characterRepository.save(characterMapper.toCharacter(characterDTO));
-
         return characterMapper.toCharacterDTO(character);
     }
 

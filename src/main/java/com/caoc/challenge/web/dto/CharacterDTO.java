@@ -13,5 +13,6 @@ public class CharacterDTO {
     private String nombre;
     private Integer edad;
     private String historia;
+    //private List<MovieDTO> peliculas;
 
 }
