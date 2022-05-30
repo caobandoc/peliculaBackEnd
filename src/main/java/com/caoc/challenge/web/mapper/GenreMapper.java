@@ -15,7 +15,6 @@ public interface GenreMapper {
             @Mapping(source="id", target="id"),
             @Mapping(source="name", target="nombre"),
             @Mapping(source="image", target="imagen")
-
     })
     GenreDTO toGenreDTO(Genre genre);
     List<GenreDTO> toGenresDTO(List<Genre> genres);

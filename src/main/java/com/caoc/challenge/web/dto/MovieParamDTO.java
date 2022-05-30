@@ -1,9 +1,10 @@
 package com.caoc.challenge.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
-import java.util.List;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -11,9 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class GenreDTO {
-    private Long id;
-    private String nombre;
+public class MovieParamDTO {
     private String imagen;
-    private List<MovieDTO> peliculas;
+    private String titulo;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private Date fechaCreacion;
 }

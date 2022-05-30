@@ -4,6 +4,7 @@ import com.caoc.challenge.domain.entity.Movie;
 import com.caoc.challenge.domain.repository.MovieRepository;
 import com.caoc.challenge.domain.services.MovieService;
 import com.caoc.challenge.web.dto.MovieDTO;
+import com.caoc.challenge.web.dto.MovieParamDTO;
 import com.caoc.challenge.web.mapper.MovieMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ public class MovieServiceImpl implements MovieService {
     private MovieRepository movieRepository;
     @Autowired
     private MovieMapper movieMapper;
+    private static final String ASC = "ASC";
+    private static final String DESC = "DESC";
 
     @Override
     public List<MovieDTO> getAll() {
@@ -55,5 +58,67 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public void delete(Long id) {
         movieRepository.deleteById(id);
+    }
+
+    @Override
+    public List<MovieParamDTO> getByParameters(String name, Long genre, String order) {
+        //Todos los campos
+        if(name != null && genre != null) {
+            return getMovieParamDTOSAll(name, genre, order);
+        }
+        //Solo el nombre
+        if(name != null && genre == null){
+            return getMovieParamDTOSName(name, order);
+        }
+        //Solo el genero
+        if(name == null && genre != null){
+            return getMovieParamDTOSGenre(genre, order);
+        }
+        //Orden o todos
+        return getMovieParamDTOSOrder(order);
+    }
+
+    private List<MovieParamDTO> getMovieParamDTOSOrder(String order) {
+        if(order != null) {
+            if (order.equals(ASC)) {
+                return movieMapper.movieListToMovieParamDTO(movieRepository.findAllByOrderByCreationDateAsc());
+            } else if (order.equals(DESC)) {
+                return movieMapper.movieListToMovieParamDTO(movieRepository.findAllByOrderByCreationDateDesc());
+            }
+        }
+        return movieMapper.movieListToMovieParamDTO(movieRepository.findAll());
+    }
+
+    private List<MovieParamDTO> getMovieParamDTOSGenre(Long genre, String order) {
+        if (order != null) {
+            if (order.equals(ASC)) {
+                return movieMapper.movieListToMovieParamDTO(movieRepository.findByGenresIdOrderByCreationDateAsc(genre));
+            } else if (order.equals(DESC)) {
+                return movieMapper.movieListToMovieParamDTO(movieRepository.findByGenresIdOrderByCreationDateDesc(genre));
+            }
+        }
+        return movieMapper.movieListToMovieParamDTO(movieRepository.findByGenresId(genre));
+    }
+
+    private List<MovieParamDTO> getMovieParamDTOSName(String name, String order) {
+        if (order != null) {
+            if (order.equals(ASC)) {
+                return movieMapper.movieListToMovieParamDTO(movieRepository.findByTitleOrderByCreationDateAsc(name));
+            } else if (order.equals(DESC)) {
+                return movieMapper.movieListToMovieParamDTO(movieRepository.findByTitleOrderByCreationDateDesc(name));
+            }
+        }
+        return movieMapper.movieListToMovieParamDTO(movieRepository.findByTitle(name));
+    }
+
+    private List<MovieParamDTO> getMovieParamDTOSAll(String name, Long genre, String order) {
+        if (order != null) {
+            if(order.equals(ASC)) {
+                return movieMapper.movieListToMovieParamDTO(movieRepository.findByTitleAndGenresIdOrderByCreationDateAsc(name, genre));
+            }else if (order.equals(DESC)) {
+                return movieMapper.movieListToMovieParamDTO(movieRepository.findByTitleAndGenresIdOrderByCreationDateDesc(name, genre));
+            }
+        }
+        return movieMapper.movieListToMovieParamDTO(movieRepository.findByTitleAndGenresId(name, genre));
     }
 }

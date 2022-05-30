@@ -2,6 +2,7 @@ package com.caoc.challenge.web.controller;
 
 import com.caoc.challenge.domain.services.MovieService;
 import com.caoc.challenge.web.dto.MovieDTO;
+import com.caoc.challenge.web.dto.MovieParamDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,11 +15,6 @@ import java.util.List;
 public class MovieController {
     @Autowired
     private MovieService movieService;
-
-    @GetMapping("")
-    public ResponseEntity<List<MovieDTO>> getAll() {
-        return new ResponseEntity<>(movieService.getAll(), HttpStatus.OK);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<MovieDTO> getById(@PathVariable Long id) {
@@ -43,5 +39,12 @@ public class MovieController {
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         movieService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<MovieParamDTO>> getParameters(@RequestParam(required = false) String name,
+                                                             @RequestParam(required = false) Long genre,
+                                                             @RequestParam(required = false) String order) {
+        return new ResponseEntity<>(movieService.getByParameters(name, genre, order), HttpStatus.OK);
     }
 }

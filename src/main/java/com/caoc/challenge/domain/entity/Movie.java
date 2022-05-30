@@ -30,4 +30,10 @@ public class Movie {
             joinColumns = @JoinColumn(name = "movies_id"),
             inverseJoinColumns = @JoinColumn(name = "characters_id"))
     private List<Character> characters;
+    @ManyToMany
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "movies_genres",
+            joinColumns = @JoinColumn(name = "movies_id"),
+            inverseJoinColumns = @JoinColumn(name = "genres_id"))
+    private List<Genre> genres;
 }

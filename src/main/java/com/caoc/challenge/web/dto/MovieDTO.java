@@ -21,5 +21,5 @@ public class MovieDTO {
     private Date fechaCreacion;
     private Integer calificacion;
     private List<CharacterDTO> personajes;
-
+    private List<GenreDTO> generos;
 }
