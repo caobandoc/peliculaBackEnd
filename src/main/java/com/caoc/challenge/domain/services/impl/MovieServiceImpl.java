@@ -1,6 +1,8 @@
 package com.caoc.challenge.domain.services.impl;
 
+import com.caoc.challenge.domain.entity.Character;
 import com.caoc.challenge.domain.entity.Movie;
+import com.caoc.challenge.domain.repository.CharacterRepository;
 import com.caoc.challenge.domain.repository.MovieRepository;
 import com.caoc.challenge.domain.services.MovieService;
 import com.caoc.challenge.web.dto.MovieDTO;
@@ -16,6 +18,8 @@ import java.util.Optional;
 public class MovieServiceImpl implements MovieService {
     @Autowired
     private MovieRepository movieRepository;
+    @Autowired
+    private CharacterRepository characterRepository;
     @Autowired
     private MovieMapper movieMapper;
     private static final String ASC = "ASC";
@@ -76,6 +80,30 @@ public class MovieServiceImpl implements MovieService {
         }
         //Orden o todos
         return getMovieParamDTOSOrder(order);
+    }
+
+    @Override
+    public Optional<MovieDTO> addCharacter(Long idMovie, Long idCharacter) {
+        Optional<Movie> movieSearch = movieRepository.findById(idMovie);
+        Optional<Character> characterSearch = characterRepository.findById(idCharacter);
+        if (movieSearch.isPresent() && characterSearch.isPresent()) {
+            movieSearch.get().getCharacters().add(characterSearch.get());
+            Movie movie = movieRepository.save(movieSearch.get());
+            return Optional.of(movieMapper.movieToMovieDTO(movie));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<MovieDTO> deleteCharacter(Long idMovie, Long idCharacter) {
+        Optional<Movie> movieSearch = movieRepository.findById(idMovie);
+        Optional<Character> characterSearch = characterRepository.findById(idCharacter);
+        if (movieSearch.isPresent() && characterSearch.isPresent()) {
+            movieSearch.get().getCharacters().remove(characterSearch.get());
+            Movie movie = movieRepository.save(movieSearch.get());
+            return Optional.of(movieMapper.movieToMovieDTO(movie));
+        }
+        return Optional.empty();
     }
 
     private List<MovieParamDTO> getMovieParamDTOSOrder(String order) {

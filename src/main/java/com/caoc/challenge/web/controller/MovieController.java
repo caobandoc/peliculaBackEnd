@@ -47,4 +47,18 @@ public class MovieController {
                                                              @RequestParam(required = false) String order) {
         return new ResponseEntity<>(movieService.getByParameters(name, genre, order), HttpStatus.OK);
     }
+
+    @PostMapping("/{idMovie}/characters/{idCharacter}")
+    public ResponseEntity<MovieDTO> addCharacter(@PathVariable Long idMovie, @PathVariable Long idCharacter) {
+        return movieService.addCharacter(idMovie, idCharacter)
+                .map(movieDTO -> new ResponseEntity<>(movieDTO, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @DeleteMapping("/{idMovie}/characters/{idCharacter}")
+    public ResponseEntity<MovieDTO> deleteCharacter(@PathVariable Long idMovie, @PathVariable Long idCharacter) {
+        return movieService.deleteCharacter(idMovie, idCharacter)
+                .map(movieDTO -> new ResponseEntity<>(movieDTO, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }
