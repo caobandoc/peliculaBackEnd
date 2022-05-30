@@ -19,18 +19,18 @@ public interface CharacterMapper {
             @Mapping(source="history", target="historia"),
             @Mapping(source="movies", target="peliculas")
     })
-    CharacterDTO toCharacterDTO(Character character);
-    List<CharacterDTO> toCharactersDTO(List<Character> characters);
+    CharacterDTO characterToCharacterDTO(Character character);
+    List<CharacterDTO> characterListToCharacterDTOList(List<Character> characterList);
 
     @InheritInverseConfiguration
-    Character toCharacter(CharacterDTO characterDTO);
-    List<Character> toCharacters(List<CharacterDTO> characterDTOs);
+    Character characterToCharacterDTO(CharacterDTO characterDTO);
+    List<Character> characterDTOListToCharacterList(List<CharacterDTO> characterDTOList);
 
     @Mappings({
             @Mapping(source="image", target="imagen"),
             @Mapping(source="name", target="nombre")
     })
-    CharacterParamDTO toCharacterParamDTO(Character character);
-    List<CharacterParamDTO> toCharactersParamDTO(List<Character> characters);
+    CharacterParamDTO characterToCharacterParamDTO(Character character);
+    List<CharacterParamDTO> characterListToCharacterParamDTO(List<Character> characterList);
 
 }

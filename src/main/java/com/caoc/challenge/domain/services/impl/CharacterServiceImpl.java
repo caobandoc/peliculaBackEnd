@@ -1,11 +1,8 @@
 package com.caoc.challenge.domain.services.impl;
 
-import com.caoc.challenge.domain.entity.Movie;
 import com.caoc.challenge.domain.repository.CharacterRepository;
-import com.caoc.challenge.domain.repository.MovieRepository;
 import com.caoc.challenge.domain.services.CharacterService;
 import com.caoc.challenge.domain.entity.Character;
-import com.caoc.challenge.domain.services.MovieService;
 import com.caoc.challenge.web.dto.CharacterDTO;
 import com.caoc.challenge.web.dto.CharacterParamDTO;
 import com.caoc.challenge.web.mapper.CharacterMapper;
@@ -25,13 +22,13 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public Optional<CharacterDTO> getById(Long id) {
         Optional<Character> characterEntity = characterRepository.findById(id);
-        return characterEntity.map(characterMapper::toCharacterDTO);
+        return characterEntity.map(characterMapper::characterToCharacterDTO);
     }
 
     @Override
     public CharacterDTO create(CharacterDTO characterDTO) {
-        Character character = characterMapper.toCharacter(characterDTO);
-        return characterMapper.toCharacterDTO(characterRepository.save(character));
+        Character character = characterMapper.characterToCharacterDTO(characterDTO);
+        return characterMapper.characterToCharacterDTO(characterRepository.save(character));
     }
 
     @Override
@@ -40,7 +37,7 @@ public class CharacterServiceImpl implements CharacterService {
         if (characterSearch.isPresent()) {
             setCharacterUpdate(characterDTO, characterSearch.get());
             Character character = characterRepository.save(characterSearch.get());
-            return Optional.of(characterMapper.toCharacterDTO(characterRepository.save(character)));
+            return Optional.of(characterMapper.characterToCharacterDTO(characterRepository.save(character)));
         }
         return Optional.empty();
     }
@@ -61,11 +58,11 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public List<CharacterParamDTO> getByParameters(String name, Integer age, Double weight, Long idMovie) {
         if (idMovie != null){
-            return characterMapper.toCharactersParamDTO(characterRepository.findByMoviesId(idMovie));
+            return characterMapper.characterListToCharacterParamDTO(characterRepository.findByMoviesId(idMovie));
         }else if (name != null || age != null || weight != null){
-            return characterMapper.toCharactersParamDTO(characterRepository.findByNameOrAgeOrWeight(name, age, weight));
+            return characterMapper.characterListToCharacterParamDTO(characterRepository.findByNameOrAgeOrWeight(name, age, weight));
         }else{
-            return characterMapper.toCharactersParamDTO(characterRepository.findAll());
+            return characterMapper.characterListToCharacterParamDTO(characterRepository.findAll());
         }
     }
 

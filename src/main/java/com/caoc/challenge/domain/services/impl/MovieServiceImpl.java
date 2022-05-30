@@ -20,28 +20,36 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<MovieDTO> getAll() {
-        return movieMapper.toMoviesDTO((List<Movie>) movieRepository.findAll());
+        return movieMapper.movieListToMovieDTOList((List<Movie>) movieRepository.findAll());
     }
 
     @Override
     public Optional<MovieDTO> getById(Long id) {
-        return movieRepository.findById(id).map(movieMapper::toMovieDTO);
+        return movieRepository.findById(id).map(movieMapper::movieToMovieDTO);
     }
 
     @Override
     public MovieDTO create(MovieDTO movieDTO) {
-        Movie movie = movieRepository.save(movieMapper.toMovie(movieDTO));
-        return movieMapper.toMovieDTO(movie);
+        Movie movie = movieRepository.save(movieMapper.movieDTOToMovie(movieDTO));
+        return movieMapper.movieToMovieDTO(movie);
     }
 
     @Override
-    public MovieDTO update(MovieDTO movieDTO) {
-        Movie movieSearch = movieRepository.findById(movieDTO.getId()).get();
+    public Optional<MovieDTO> update(MovieDTO movieDTO) {
+        Optional<Movie> movieSearch = movieRepository.findById(movieDTO.getId());
+        if (movieSearch.isPresent()) {
+            setMovieUpdate(movieDTO, movieSearch.get());
+            Movie movie = movieRepository.save(movieSearch.get());
+            return Optional.of(movieMapper.movieToMovieDTO(movie));
+        }
+        return Optional.empty();
+    }
+
+    private void setMovieUpdate(MovieDTO movieDTO, Movie movieSearch) {
+        movieSearch.setImage(movieDTO.getImagen());
         movieSearch.setTitle(movieDTO.getTitulo());
         movieSearch.setCreationDate(movieDTO.getFechaCreacion());
         movieSearch.setRate(movieDTO.getCalificacion());
-        Movie movie = movieRepository.save(movieSearch);
-        return movieMapper.toMovieDTO(movie);
     }
 
     @Override

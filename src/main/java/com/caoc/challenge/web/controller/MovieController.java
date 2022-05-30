@@ -34,7 +34,9 @@ public class MovieController {
 
     @PutMapping("/update")
     public ResponseEntity<MovieDTO> update(@RequestBody MovieDTO genreDTO) {
-        return new ResponseEntity<>(movieService.update(genreDTO), HttpStatus.OK);
+        return movieService.update(genreDTO)
+                .map(movieDTO1 -> new ResponseEntity<>(movieDTO1, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/delete/{id}")

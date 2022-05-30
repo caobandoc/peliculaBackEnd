@@ -9,7 +9,7 @@ public interface MovieService {
     List<MovieDTO> getAll();
     Optional<MovieDTO> getById(Long id);
     MovieDTO create(MovieDTO movieDTO);
-    MovieDTO update(MovieDTO movieDTO);
+    Optional<MovieDTO> update(MovieDTO movieDTO);
     void delete(Long id);
 
 }
